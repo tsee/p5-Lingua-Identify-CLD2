@@ -1,0 +1,9 @@
+buildtmp/
+Build
+MANIFEST$
+META.*
+MYMETA.*
+.*.swo
+.*.swp
+blib/
+_build/
