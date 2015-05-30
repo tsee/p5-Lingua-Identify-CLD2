@@ -7,3 +7,5 @@ MYMETA.*
 .*.swp
 blib/
 _build/
+src/*.o
+*.o
