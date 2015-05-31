@@ -1,5 +1,6 @@
 #include <compact_lang_det.h>
 #include "myinit.h"
+#include "myconversions.h"
 
 %module{Lingua::Detect::CLD2};
 
@@ -14,10 +15,10 @@ ExtDetectLanguageSummaryCheckUTF8(buffer, buffer_length, is_plain_text, cld_hint
     int flags;
   PPCODE:
     CLDHints cld_hints_struct;
-    hashref_to_cldhints(cld_hints, cld_hints_struct);
+    hashref_to_cldhint(aTHX_ cld_hints, &cld_hints_struct);
 
 
-    Language language3 = 0;
+    Language language3 = UNKNOWN_LANGUAGE;
     int percent3 = 0;
     double normalized_score3 = 0;
     ResultChunkVector resultchunkvector;
