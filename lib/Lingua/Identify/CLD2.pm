@@ -32,6 +32,10 @@ our @EXPORT_OK = (
       LanguageCode
       LanguageShortCode
       LanguageDeclaredName
+      GetLanguageFromName
+      LanguageCloseSet
+      IsLatnLanguage
+      IsOthrLanguage
     ),
     keys(%constants),
   );

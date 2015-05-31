@@ -73,5 +73,12 @@ LanguageName(int language_id)
     };
   OUTPUT: RETVAL
 
+Language GetLanguageFromName(char* src)
+
+int LanguageCloseSet(Language lang)
+ 
+bool IsLatnLanguage(Language lang)
+bool IsOthrLanguage(Language lang)
+
 %}
 
