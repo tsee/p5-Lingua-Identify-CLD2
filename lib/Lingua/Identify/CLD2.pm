@@ -8,6 +8,10 @@ our $VERSION = '0.01';
 require XSLoader;
 XSLoader::load('Lingua::Identify::CLD2', $VERSION);
 
+require Exporter;
+our @EXPORT_OK = qw(DetectLanguage);
+our %EXPORT_TAGS = (':all' => \@EXPORT_OK);
+
 1;
 __END__
 
