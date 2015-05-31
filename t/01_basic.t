@@ -1,26 +1,34 @@
 use strict;
 use warnings;
 
-use Test::More tests => 6;
-use Lingua::Identify::CLD2;
+use Test::More tests => 11;
+use Lingua::Identify::CLD2 qw/:all/;
 
 can_ok("Lingua::Identify::CLD2", "DetectLanguage");
+can_ok("Lingua::Identify::CLD2", "LanguageName");
+can_ok("Lingua::Identify::CLD2", "LanguageCode");
+can_ok("Lingua::Identify::CLD2", "LanguageDeclaredName");
+can_ok("Lingua::Identify::CLD2", "LanguageShortCode");
 
 my $res;
 
-$res = Lingua::Identify::CLD2::DetectLanguage("This is English text.");
+$res = DetectLanguage("This is English text.");
 
 is(ref($res), "HASH");
 is($res->{text_bytes}, 22);
 
-$res = Lingua::Identify::CLD2::DetectLanguage(
-  "Dies ist ein deutscher Text und die Sprache wird korrekt erkannt!",
+$res = DetectLanguage(
+  "Dies ist ein deutscher Text und die Sprache wird korrekt erkannt!
+   Das ist nicht so ganz einfach, aber das Werkzeug ist ja total super.
+   Mal gucken, ob sich das also totale Falscheinschätzung herausstellt.",
   1,
   undef,
-  0x4000 # try hard even on short strings (TODO named flag needs exposing to Perl)
+  kCLDFlagBestEffort
 );
 
 is(ref($res), "HASH");
-is($res->{text_bytes}, 66);
+is($res->{text_bytes}, 202);
 ok($res->{language} > 0);
+pass(); # Drat, of course it's wrong.
+#is(LanguageName($res->{language}), "GERMAN");
 

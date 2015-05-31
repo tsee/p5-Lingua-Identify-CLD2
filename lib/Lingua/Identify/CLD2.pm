@@ -8,9 +8,35 @@ our $VERSION = '0.01';
 require XSLoader;
 XSLoader::load('Lingua::Identify::CLD2', $VERSION);
 
+my %constants;
+BEGIN {
+  %constants = (
+    # FIXME these are copy/pasted from the header, so might be very version dependent. :( ENOTENOUGHTIME
+    kCLDFlagScoreAsQuads => 0x0100,  #/ Force Greek, etc. => quads
+    kCLDFlagHtml =>         0x0200,  #/ Debug HTML => stderr
+    kCLDFlagCr =>           0x0400,  #/ <cr> per chunk if HTML
+    kCLDFlagVerbose =>      0x0800,  #/ More debug HTML => stderr
+    kCLDFlagQuiet =>        0x1000,  #/ Less debug HTML => stderr
+    kCLDFlagEcho =>         0x2000,  #/ Echo input => stderr
+    kCLDFlagBestEffort =>   0x4000,  #/ Give best-effort answer,
+  );
+}
+use constant \%constants;
+
 require Exporter;
-our @EXPORT_OK = qw(DetectLanguage);
-our %EXPORT_TAGS = (':all' => \@EXPORT_OK);
+our @ISA = qw(Exporter);
+our @EXPORT_OK = (
+    qw(
+      DetectLanguage
+      LanguageName
+      LanguageCode
+      LanguageShortCode
+      LanguageDeclaredName
+    ),
+    keys(%constants),
+  );
+
+our %EXPORT_TAGS = ('all' => \@EXPORT_OK);
 
 1;
 __END__

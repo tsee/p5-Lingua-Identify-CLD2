@@ -45,5 +45,33 @@ DetectLanguage(buffer, is_plain_text = 1, cld_hints = &PL_sv_undef, flags = 0)
     hv_stores(hv, "is_reliable", newSViv((int)is_reliable));
     hv_stores(hv, "valid_prefix_bytes", newSViv(valid_prefix_bytes));
     XPUSHs(rv);
+
+
+char *
+LanguageName(int language_id)
+  ALIAS:
+    LanguageName = 0
+    LanguageCode = 1
+    LanguageShortCode = 2
+    LanguageDeclaredName = 3
+  CODE:
+    switch (ix) {
+    case 0:
+      RETVAL = (char *)CLD2::LanguageName((CLD2::Language)language_id);
+      break;
+    case 1:
+      RETVAL = (char *)CLD2::LanguageCode((CLD2::Language)language_id);
+      break;
+    case 2:
+      RETVAL = (char *)CLD2::LanguageShortCode((CLD2::Language)language_id);
+      break;
+    case 3:
+      RETVAL = (char *)CLD2::LanguageDeclaredName((CLD2::Language)language_id);
+      break;
+    default:
+      abort();
+    };
+  OUTPUT: RETVAL
+
 %}
 
