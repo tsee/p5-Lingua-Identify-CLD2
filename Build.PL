@@ -19,7 +19,7 @@ my $build = Module::Build::WithXSpp->new(
   early_includes => [qw()],
   extra_compiler_flags => [ (defined($additional_include_dir) ? "-I$additional_include_dir" : ()) ],
   extra_linker_flags   => [ (defined($additional_link_dir) ? "-L$additional_link_dir" : ()),
-                            "-Lcld2_full" ],
+                            "-lcld2_full" ],
 );
 
 $build->create_build_script;
