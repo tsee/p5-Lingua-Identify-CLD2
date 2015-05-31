@@ -43,17 +43,3 @@ ExtDetectLanguageSummaryCheckUTF8(buffer, buffer_length, is_plain_text, cld_hint
     XPUSHs(rv);
 %}
 
-
-%name{Lingua::Detect::CLD2::ResultChunk} struct ResultChunk
-{
-  %name{new} Dog(std::string& name);
-  ~Dog();
-};
-
-%name{Lingua::Detect::CLD2} class Dog
-{
-  %name{new} Dog(std::string& name);
-  ~Dog();
-};
-
-
