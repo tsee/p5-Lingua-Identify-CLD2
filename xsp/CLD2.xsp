@@ -2,7 +2,7 @@
 #include "myinit.h"
 #include "myconversions.h"
 
-%module{Lingua::Detect::CLD2};
+%module{Lingua::Identify::CLD2};
 
 %{
 
