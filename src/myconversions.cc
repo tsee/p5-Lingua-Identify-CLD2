@@ -7,6 +7,15 @@ using namespace CLD2;
 void
 hashref_to_cldhint(pTHX_ SV *hashref, CLDHints *cldhints)
 {
+  if (!SvOK(hashref)) {
+    // Special case: If undef, we'll use defaults.
+    cldhints->content_language_hint = NULL;
+    cldhints->tld_hint              = NULL;
+    cldhints->encoding_hint         = UNKNOWN_ENCODING;
+    cldhints->language_hint         = UNKNOWN_LANGUAGE;
+    return;
+  }
+
   if (!SvROK(hashref) || SvTYPE(SvRV(hashref)) != SVt_PVHV)
     croak("Need hashref for CLDHints");
   

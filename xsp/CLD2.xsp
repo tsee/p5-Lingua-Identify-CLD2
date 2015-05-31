@@ -3,15 +3,16 @@
 #include "myconversions.h"
 
 %module{Lingua::Identify::CLD2};
+%package{Lingua::Identify::CLD2};
 
 %{
 
 void
-ExtDetectLanguageSummaryCheckUTF8(buffer, is_plain_text, cld_hints, flags)
-    SV *buffer;
-    bool is_plain_text;
-    SV *cld_hints;
-    int flags;
+DetectLanguage(buffer, is_plain_text = 1, cld_hints = &PL_sv_undef, flags = 0)
+    SV *buffer
+    bool is_plain_text
+    SV *cld_hints
+    int flags
   PPCODE:
     char *buffer_str;
     STRLEN buffer_length;
