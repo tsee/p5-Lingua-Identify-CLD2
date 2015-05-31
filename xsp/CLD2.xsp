@@ -7,16 +7,18 @@
 %{
 
 void
-ExtDetectLanguageSummaryCheckUTF8(buffer, buffer_length, is_plain_text, cld_hints, flags)
-    char *buffer;
-    int buffer_length;
+ExtDetectLanguageSummaryCheckUTF8(buffer, is_plain_text, cld_hints, flags)
+    SV *buffer;
     bool is_plain_text;
     SV *cld_hints;
     int flags;
   PPCODE:
+    char *buffer_str;
+    STRLEN buffer_length;
+    buffer_str = SvPVutf8(buffer, buffer_length);
+
     CLDHints cld_hints_struct;
     hashref_to_cldhint(aTHX_ cld_hints, &cld_hints_struct);
-
 
     Language language3 = UNKNOWN_LANGUAGE;
     int percent3 = 0;
@@ -27,7 +29,7 @@ ExtDetectLanguageSummaryCheckUTF8(buffer, buffer_length, is_plain_text, cld_hint
     int valid_prefix_bytes = 0;
 
     Language language = 
-      ExtDetectLanguageSummaryCheckUTF8(buffer, buffer_length, is_plain_text, &cld_hints_struct, flags,
+      ExtDetectLanguageSummaryCheckUTF8(buffer_str, (int)buffer_length, is_plain_text, &cld_hints_struct, flags,
                                         &language3, &percent3, &normalized_score3, &resultchunkvector,
                                         &text_bytes, &is_reliable, &valid_prefix_bytes);
 
