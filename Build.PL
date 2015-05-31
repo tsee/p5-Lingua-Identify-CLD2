@@ -2,9 +2,6 @@
 use strict;
 use Module::Build::WithXSpp;
 
-my $additional_link_dir = "../cld2-read-only/internal";
-my $additional_include_dir = "../cld2-read-only/public";
-
 my $build = Module::Build::WithXSpp->new(
   module_name     => 'Lingua::Identify::CLD2',
   license         => 'perl',
@@ -17,9 +14,8 @@ my $build = Module::Build::WithXSpp->new(
     'ExtUtils::Typemap::Basic'       => '0.04',
   },
   early_includes => [qw()],
-  extra_compiler_flags => [ (defined($additional_include_dir) ? "-I$additional_include_dir" : ()) ],
-  extra_linker_flags   => [ (defined($additional_link_dir) ? "-L$additional_link_dir" : ()),
-                            "-lcld2_full" ],
+  extra_compiler_flags => [ "-Isrc/cld2/internal", "-Isrc/cld2/public", "-Icld2/internal", "-Icld2/public" ],
+  #extra_linker_flags   => [ (defined($additional_link_dir) ? "-L$additional_link_dir" : ()), "-lcld2_full" ],
 );
 
 $build->create_build_script;
