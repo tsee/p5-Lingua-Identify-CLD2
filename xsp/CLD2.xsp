@@ -36,7 +36,8 @@ DetectLanguage(buffer, is_plain_text = 1, cld_hints = &PL_sv_undef, flags = 0)
 
     HV *hv = newHV();
     SV *rv = sv_2mortal(newRV_noinc((SV *)hv));
-    hv_stores(hv, "language", newSViv(language)); // FIXME convert to string
+    hv_stores(hv, "language", newSViv(language));
+    hv_stores(hv, "language_string", newSVpvs(LanguageName(language)));
     hv_stores(hv, "percent3", newSViv(percent3));
     hv_stores(hv, "normalized_score3", newSVnv(normalized_score3));
     // TODO resultchunkvector
