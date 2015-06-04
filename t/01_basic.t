@@ -1,14 +1,13 @@
 use strict;
 use warnings;
 
-use Test::More tests => 11;
+use Test::More tests => 10;
 use Lingua::Identify::CLD2 qw/:all/;
 
 can_ok("Lingua::Identify::CLD2", "DetectLanguage");
 can_ok("Lingua::Identify::CLD2", "LanguageName");
 can_ok("Lingua::Identify::CLD2", "LanguageCode");
 can_ok("Lingua::Identify::CLD2", "LanguageDeclaredName");
-can_ok("Lingua::Identify::CLD2", "LanguageShortCode");
 
 my $res;
 

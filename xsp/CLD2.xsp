@@ -52,8 +52,7 @@ LanguageName(int language_id)
   ALIAS:
     LanguageName = 0
     LanguageCode = 1
-    LanguageShortCode = 2
-    LanguageDeclaredName = 3
+    LanguageDeclaredName = 2
   CODE:
     switch (ix) {
     case 0:
@@ -63,9 +62,6 @@ LanguageName(int language_id)
       RETVAL = (char *)CLD2::LanguageCode((CLD2::Language)language_id);
       break;
     case 2:
-      RETVAL = (char *)CLD2::LanguageShortCode((CLD2::Language)language_id);
-      break;
-    case 3:
       RETVAL = (char *)CLD2::LanguageDeclaredName((CLD2::Language)language_id);
       break;
     default:

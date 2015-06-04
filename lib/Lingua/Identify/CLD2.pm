@@ -30,7 +30,6 @@ our @EXPORT_OK = (
       DetectLanguage
       LanguageName
       LanguageCode
-      LanguageShortCode
       LanguageDeclaredName
       GetLanguageFromName
       LanguageCloseSet
