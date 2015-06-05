@@ -5,6 +5,7 @@ use warnings;
 
 our $VERSION = '0.01';
 
+
 require XSLoader;
 XSLoader::load('Lingua::Identify::CLD2', $VERSION);
 
@@ -12,6 +13,7 @@ my %constants;
 BEGIN {
   %constants = (
     # FIXME these are copy/pasted from the header, so might be very version dependent. :( ENOTENOUGHTIME
+    # Also keep in sync with docs below
     kCLDFlagScoreAsQuads => 0x0100,  #/ Force Greek, etc. => quads
     kCLDFlagHtml =>         0x0200,  #/ Debug HTML => stderr
     kCLDFlagCr =>           0x0400,  #/ <cr> per chunk if HTML
@@ -23,23 +25,33 @@ BEGIN {
 }
 use constant \%constants;
 
+use Lingua::Identify::CLD2::GenConstants;
+
 require Exporter;
 our @ISA = qw(Exporter);
-our @EXPORT_OK = (
-    qw(
-      DetectLanguage
-      LanguageName
-      LanguageCode
-      LanguageDeclaredName
-      GetLanguageFromName
-      LanguageCloseSet
-      IsLatnLanguage
-      IsOthrLanguage
-    ),
-    keys(%constants),
-  );
 
-our %EXPORT_TAGS = ('all' => \@EXPORT_OK);
+my @functions = qw(
+  DetectLanguage
+  LanguageName
+  LanguageCode
+  LanguageDeclaredName
+  GetLanguageFromName
+  LanguageCloseSet
+  IsLatnLanguage
+  IsOthrLanguage
+);
+
+our @EXPORT_OK;
+push @EXPORT_OK, (
+  @functions,
+  keys(%constants),
+);
+
+our %EXPORT_TAGS;
+$EXPORT_TAGS{all} = \@EXPORT_OK;
+$EXPORT_TAGS{functions} = \@functions;
+$EXPORT_TAGS{constants} ||= [];
+push @{$EXPORT_TAGS{constants}}, keys %constants;
 
 1;
 __END__
@@ -53,9 +65,15 @@ Lingua::Identify::CLD2 - CLD2 wrapper for Perl
 This module is an XS wrapper around the CLD2 "compact language detection"
 library.
 
-Optionally, you may choose to import a any or all of the functions listed below
-into your namespace using normal L<Exporter> semantics.
-You can import all of them with the C<":all"> tag.
+Optionally, you may choose to import a any or all of the functions and constants
+discussed below into your namespace using normal L<Exporter> semantics.
+You can import all of them with the C<":all"> tag. You can choose to import
+only the functions or the (large number of) constants using C<":functions">
+and C<":constants"> respectively.
+
+The constants that correspond to the C<Language> enum values in CLD2
+have a C<CLD2_> prefix in Perl. For example C<CLD2::GERMAN> in C++
+becomes C<CLD2_GERMAN> in C<Lingua::Identify::CLD2> in Perl.
 
 The documentation of this module might be a bit spotty. If in doubt,
 refer to the CLD2 documentation of the respective functions and please
@@ -157,6 +175,14 @@ Quoting the CLD2 documentation:
 Given a CLD2 language id,
 returns which set of statistically-close languages lang is in. 0 means "none".
 
+=head1 CAVEATS
+
+For both portability (CLD2 uses a bunch of ummm.. shell scripts as a build system)
+AND for consistency of the exposed constants, C<Lingua::Identify::CLD2> ships
+its own copy of CLD2. Newer versions of CLD2 thus require updating this module.
+
+The ULScript functionality is mostly not exposed. But if needed, that should be
+a rather simple matter of (relatively little) programming.
 
 =head1 SEE ALSO
 
