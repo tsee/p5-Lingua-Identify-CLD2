@@ -105,6 +105,29 @@ they are:
     kCLDFlagEcho         # Echo input => stderr
     kCLDFlagBestEffort   # Give best-effort answer
 
+Quoting the CLD2 documentation with more detail on the flags:
+
+    kCLDFlagScoreAsQuads
+     Normally, several languages are detected solely by their Unicode script.
+     Combined with appropritate lookup tables, this flag forces them instead
+     to be detected via quadgrams. This can be a useful refinement when looking
+     for meaningful text in these languages, instead of just character sets.
+     The default tables do not support this use.
+    kCLDFlagHtml
+     For each detection call, write an HTML file to stderr, showing the text
+     chunks and their detected languages.
+    kCLDFlagCr
+     In that HTML file, force a new line for each chunk.
+    kCLDFlagVerbose
+     In that HTML file, show every lookup entry.
+    kCLDFlagQuiet
+     In that HTML file, suppress most of the output detail.
+    kCLDFlagEcho
+     Echo every input buffer to stderr.
+    kCLDFlagBestEffort
+     Give best-effort answer, instead of UNKNOWN_LANGUAGE. May be useful for
+     short text if the caller prefers an approximate answer over none.
+ 
 A CLD2 hints structure in Perl is a reference to a hash
 containing any of the following keys. They all have
 defaults.
