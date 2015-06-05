@@ -6,6 +6,7 @@ use Data::Dumper;
 
 my $internal_folder = catdir(qw(src cld2 internal));
 my $gen_languages_header = catfile($internal_folder, "generated_language.h");
+my $gen_scripts_header = catfile($internal_folder, "generated_ulscript.h");
 
 print "# WARNING: DO NOT CHANGE! MACHINE GENERATED!\n\n";
 
@@ -15,23 +16,12 @@ print "package Lingua::Identify::CLD2; # hacky\n\n";
 open my $fh, "<", $gen_languages_header or die $!;
 my $code = do {local $/; <$fh>};
 close $fh;
+my $lang_enum = extract_enum_values($code, "Language", "NUM_LANGUAGES");
 
-$code =~ s/\/\/.*$//mg;
-$code =~ m/
-  typedef \s+ enum \s* \{
-  (
-    (?:
-      \s*
-      \w+ \s* = \s* \d+ \s* ,
-    )+
-  )
-  \s*
-  NUM_LANGUAGES
-  \s* \} \s* Language \s* ;
-/sx
-  or die "Could not find Language enum";
-
-my $lang_enum = chop_match($1);
+open $fh, "<", $gen_scripts_header or die $!;
+$code = do {local $/; <$fh>};
+close $fh;
+my $scripts_enum = extract_enum_values($code, "ULScript", "NUM_ULSCRIPTS");
 
 print <<'HERE';
 our %Constants;
@@ -41,6 +31,10 @@ HERE
 
 foreach my $elem (@$lang_enum) {
   print "  'CLD2_$elem->[0]' => $elem->[1],\n";
+}
+
+foreach my $elem (@$scripts_enum) {
+  print "  '$elem->[0]' => $elem->[1],\n";
 }
 
 print <<'HERE';
@@ -73,4 +67,27 @@ sub chop_match {
   }
 
   return \@out;
+}
+
+sub extract_enum_values {
+  my $code = shift;
+  my $name = shift;
+  my $count_tag = shift;
+
+  $code =~ s/\/\/.*$//mg;
+  $code =~ m/
+    typedef \s+ enum \s* \{
+    (
+      (?:
+        \s*
+        \w+ \s* = \s* \d+ \s* ,
+      )+
+    )
+    \s*
+    \Q$count_tag\E
+    \s* \} \s* \Q$name\E \s* ;
+  /sx
+    or die "Could not find $name enum";
+
+  return chop_match($1);
 }
