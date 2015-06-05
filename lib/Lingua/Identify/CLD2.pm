@@ -39,7 +39,14 @@ my @functions = qw(
   LanguageCloseSet
   IsLatnLanguage
   IsOthrLanguage
+  ULScriptName
+  ULScriptCode
+  ULScriptDeclaredName
+  GetULScriptFromName
 );
+  #ULScriptRecognitionType
+  #LScript4
+  #LanguageCloseSet
 
 our @EXPORT_OK;
 push @EXPORT_OK, (
@@ -74,6 +81,8 @@ and C<":constants"> respectively.
 The constants that correspond to the C<Language> enum values in CLD2
 have a C<CLD2_> prefix in Perl. For example C<CLD2::GERMAN> in C++
 becomes C<CLD2_GERMAN> in C<Lingua::Identify::CLD2> in Perl.
+Unlike the C<Language> enum values, the C<ULScript> values already have
+a name prefix in C++, so they are exposed as is, eg. C<ULScript_Balinese>.
 
 The documentation of this module might be a bit spotty. If in doubt,
 refer to the CLD2 documentation of the respective functions and please
@@ -198,14 +207,32 @@ Quoting the CLD2 documentation:
 Given a CLD2 language id,
 returns which set of statistically-close languages lang is in. 0 means "none".
 
+=head2 ULScriptName
+
+Given CLD2 ULScript id, returns the script name as a string.
+
+=head2 ULScriptCode
+
+Given CLD2 ULScript id, returns the code for the script as a string (equivalent
+to the language codes, see above).
+
+=head2 GetULScriptFromName
+
+Given a script name or code, returns the corresponding CLD2 ULScript id.
+
+=head2 DefaultLanguage
+
+Given an ULScript id, returns the most common Language (id) in that script.
+
 =head1 CAVEATS
 
 For both portability (CLD2 uses a bunch of ummm.. shell scripts as a build system)
 AND for consistency of the exposed constants, C<Lingua::Identify::CLD2> ships
 its own copy of CLD2. Newer versions of CLD2 thus require updating this module.
 
-The ULScript functionality is mostly not exposed. But if needed, that should be
-a rather simple matter of (relatively little) programming.
+The encoding functionality for hints is mostly not exposed.
+But if needed, that should be a rather simple matter of
+(relatively little) programming.
 
 =head1 SEE ALSO
 
