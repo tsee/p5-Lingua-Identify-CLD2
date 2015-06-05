@@ -4,3 +4,4 @@
 %typemap{std::string}{simple};
 %typemap{std::string&}{reference};
 %typemap{Language}{simple};
+%typemap{ULScript}{simple};
