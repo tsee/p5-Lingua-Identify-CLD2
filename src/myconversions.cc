@@ -44,6 +44,8 @@ resultchunk_to_hash(pTHX_ const ResultChunk &rc)
   hv_stores(hv, "offset", newSViv(rc.offset));
   hv_stores(hv, "bytes", newSViv(rc.bytes));
   hv_stores(hv, "lang1", newSVuv(rc.lang1));
+  const char *ln = CLD2::LanguageName((CLD2::Language)rc.lang1);
+  hv_stores(hv, "lang1_str", newSVpv(ln, 0));
   hv_stores(hv, "pad", newSVuv(rc.pad));
 
   return hv;
