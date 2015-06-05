@@ -11,6 +11,6 @@ void hashref_to_cldhint(pTHX_ SV *hashref, CLD2::CLDHints *cldhints);
 
 HV *resultchunk_to_hash(pTHX_ const CLD2::ResultChunk &rc);
 
-AV *resultchunk_vector_to_array(pTHX_ const std::vector<CLD2::ResultChunk> &rcv);
+AV *resultchunk_vector_to_array(pTHX_ const CLD2::ResultChunkVector &rcv);
 
 #endif

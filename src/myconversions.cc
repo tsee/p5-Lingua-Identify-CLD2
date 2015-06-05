@@ -52,7 +52,7 @@ resultchunk_to_hash(pTHX_ const ResultChunk &rc)
 }
 
 AV *
-resultchunk_vector_to_array(pTHX_ const std::vector<ResultChunk> &rcv)
+resultchunk_vector_to_array(pTHX_ const ResultChunkVector &rcv)
 {
   AV *av = newAV();
 
