@@ -57,7 +57,106 @@ Optionally, you may choose to import a any or all of the functions listed below
 into your namespace using normal L<Exporter> semantics.
 You can import all of them with the C<":all"> tag.
 
+The documentation of this module might be a bit spotty. If in doubt,
+refer to the CLD2 documentation of the respective functions and please
+submit patches after you do.
+
 =head2 DetectLanguage
+
+The main API function that, given a text and some other parameters, will
+attempt to detect the language(s) of the text. An example output is reproduced
+below. For details on its interpretation, please refer to the CLD2 manual.
+Patches welcome.
+
+The first input parameter should be a string containing the text to
+analyse. All other parameters are optional.
+
+The second parameter is a boolean (defaulting to true) that indicates
+whether or not the provided text is plain text. If not, HTML tags/etc will be
+stripped out. The third parameter can be a CLD hints structure (see below) or
+undefined. The fourth parameter is an integer for flags. The following flags
+are defined as constants (and exportable from this module). They can be
+combined with the C<|> operator. As per the CLD2 documentation,
+they are:
+
+    kCLDFlagScoreAsQuads # Force Greek, etc. => quads
+    kCLDFlagHtml         # Debug HTML => stderr
+    kCLDFlagCr           # <cr> per chunk if HTML
+    kCLDFlagVerbose      # More debug HTML => stderr
+    kCLDFlagQuiet        # Less debug HTML => stderr
+    kCLDFlagEcho         # Echo input => stderr
+    kCLDFlagBestEffort   # Give best-effort answer
+
+A CLD2 hints structure in Perl is a reference to a hash
+containing any of the following keys. They all have
+defaults.
+
+    content_language_hint => eg. "mi,en" would boost Maori and English
+    tld_hint              => eg. "id" boosts Indonesian
+    encoding_hint         => Given a CLD encoding id boosts that encoding
+                             (FIXME not exposed to Perl right now)
+    language_hint         => Given a CLD language id, boosts that language
+
+Here's an example return value for this function (see F<t/01basic.t>
+in this distribution for this particular example).
+
+    $VAR1 = {
+              'valid_prefix_bytes' => 0,
+              'language_string' => 'SINDHI',
+              'language' => 99,
+              'text_bytes' => 202,
+              'normalized_score3' => '1039',
+              'is_reliable' => 1,
+              'resultchunkvector' => [
+                                       {
+                                         'pad' => 42035,
+                                         'bytes' => 212,
+                                         'lang1' => 5,
+                                         'lang1_str' => 'GERMAN',
+                                         'offset' => 0
+                                       }
+                                     ],
+              'percent3' => 99
+            };
+
+
+=head2 LanguageName
+
+Given a CLD2 language id, converts it to a human readable language name.
+
+=head2 LanguageCode
+
+Given a CLD2 language id, converts it to a language code. Quoting the CLD2
+documentation:
+
+    Given the Language, return the language code, e.g. "ko"
+    This is determined by the following (in order of preference):
+    
+    - ISO-639-1 two-letter language code
+      (all except those mentioned below)
+    - ISO-639-2 three-letter bibliographic language code
+      (Tibetan, Dhivehi, Cherokee, Syriac)
+    - Google-specific language code
+      (ChineseT ("zh-TW"), Teragram Unknown, Unknown,
+      Portuguese-Portugal, Portuguese-Brazil, Limbu)
+    - Fake RTypeNone names.
+
+=head2 LanguageDeclaredName
+
+=head2 GetLanguageFromName
+
+Convert a language name or code back to a CLD2 id.
+
+Quoting the CLD2 documentation:
+
+    Name can be either full name or ISO code, or can be ISO code embedded in
+    a language-script combination such as "en-Latn-GB".
+
+=head2 LanguageCloseSet
+
+Given a CLD2 language id,
+returns which set of statistically-close languages lang is in. 0 means "none".
+
 
 =head1 SEE ALSO
 
