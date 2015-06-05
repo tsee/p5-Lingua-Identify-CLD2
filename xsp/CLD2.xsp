@@ -80,9 +80,6 @@ LanguageName(int language_id)
 Language GetLanguageFromName(char* src)
 
 int LanguageCloseSet(Language lang)
- 
-bool IsLatnLanguage(Language lang)
-bool IsOthrLanguage(Language lang)
 
 %}
 
