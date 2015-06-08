@@ -1,6 +1,11 @@
 # Avoid archives of this distribution
 \bLingua-Identify-CLD2-\d+\.\d+(?:_\d+)?\.tar\.gz$
 
+\.git\b
+
+\.o$
+\bbuildtmp
+
 # Avoid version control files.
 \bRCS\b
 \bCVS\b
@@ -41,3 +46,4 @@
 \B\._
 
 ^MYMETA.yml$
+^MYMETA\.json$
