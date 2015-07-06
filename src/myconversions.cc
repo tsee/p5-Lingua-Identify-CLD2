@@ -64,3 +64,24 @@ resultchunk_vector_to_array(pTHX_ const ResultChunkVector &rcv)
 
   return av;
 }
+
+HV*
+language_to_hash(CLD2::Language language, int percent, double score) {
+    HV *hv = newHV();
+    hv_stores(hv, "language_code", newSVpv(CLD2::LanguageCode(language), 0));
+    hv_stores(hv, "percent", newSViv(percent));
+    hv_stores(hv, "score", newSViv(score));
+    return hv;
+}
+
+AV*
+languages_to_array(CLD2::Language languages[3], int percent[3], double score[3]) {
+    AV* av = newAV();
+    for (int i = 0; i < 3; ++i) {
+        if (languages[i] == UNKNOWN_LANGUAGE) {
+            continue;
+        }
+        av_push(av, newRV_noinc((SV *)language_to_hash(languages[i], percent[i], score[i])));
+    }
+    return av;
+}

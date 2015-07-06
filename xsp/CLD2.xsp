@@ -39,8 +39,8 @@ DetectLanguage(buffer, is_plain_text = 1, cld_hints = &PL_sv_undef, flags = 0)
 
     hv_stores(hv, "language", newSViv(language));
 
-    const char *ln = CLD2::LanguageName(language);
-    hv_stores(hv, "language_string", newSVpv(ln, 0));
+    hv_stores(hv, "language_name", newSVpv(CLD2::LanguageName(language), 0));
+    hv_stores(hv, "language_code", newSVpv(CLD2::LanguageCode(language), 0));
 
     AV *reschunk_av = resultchunk_vector_to_array(aTHX_ resultchunkvector);
     hv_stores(hv, "resultchunkvector", newRV_noinc((SV *)reschunk_av));
@@ -48,6 +48,8 @@ DetectLanguage(buffer, is_plain_text = 1, cld_hints = &PL_sv_undef, flags = 0)
     hv_stores(hv, "text_bytes", newSViv(text_bytes));
     hv_stores(hv, "is_reliable", newSViv((int)is_reliable));
     hv_stores(hv, "valid_prefix_bytes", newSViv(valid_prefix_bytes));
+
+    hv_stores(hv, "languages", newRV_noinc((SV*)languages_to_array(language3, percent3, normalized_score3)));
 
     XPUSHs(rv);
 
