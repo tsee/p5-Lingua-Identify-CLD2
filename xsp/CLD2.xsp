@@ -21,9 +21,9 @@ DetectLanguage(buffer, is_plain_text = 1, cld_hints = &PL_sv_undef, flags = 0)
     CLDHints cld_hints_struct;
     hashref_to_cldhint(aTHX_ cld_hints, &cld_hints_struct);
 
-    Language language3 = UNKNOWN_LANGUAGE;
-    int percent3 = 0;
-    double normalized_score3 = 0;
+    Language language3[3];
+    int percent3[3];
+    double normalized_score3[3];
     ResultChunkVector resultchunkvector;
     int text_bytes = 0;
     bool is_reliable = 0;
@@ -31,7 +31,7 @@ DetectLanguage(buffer, is_plain_text = 1, cld_hints = &PL_sv_undef, flags = 0)
 
     Language language = 
       ExtDetectLanguageSummaryCheckUTF8(buffer_str, (int)buffer_length, is_plain_text, &cld_hints_struct, flags,
-                                        &language3, &percent3, &normalized_score3, &resultchunkvector,
+                                        language3, percent3, normalized_score3, &resultchunkvector,
                                         &text_bytes, &is_reliable, &valid_prefix_bytes);
 
     HV *hv = newHV();
@@ -41,9 +41,6 @@ DetectLanguage(buffer, is_plain_text = 1, cld_hints = &PL_sv_undef, flags = 0)
 
     const char *ln = CLD2::LanguageName(language);
     hv_stores(hv, "language_string", newSVpv(ln, 0));
-
-    hv_stores(hv, "percent3", newSViv(percent3));
-    hv_stores(hv, "normalized_score3", newSVnv(normalized_score3));
 
     AV *reschunk_av = resultchunk_vector_to_array(aTHX_ resultchunkvector);
     hv_stores(hv, "resultchunkvector", newRV_noinc((SV *)reschunk_av));
