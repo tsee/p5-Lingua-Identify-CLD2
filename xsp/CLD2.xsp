@@ -21,7 +21,7 @@ DetectLanguage(buffer, is_plain_text = 1, cld_hints = &PL_sv_undef, flags = 0)
     CLDHints cld_hints_struct;
     hashref_to_cldhint(aTHX_ cld_hints, &cld_hints_struct);
 
-    Language language3[3];
+    Language language3[3] = {UNKNOWN_LANGUAGE, UNKNOWN_LANGUAGE, UNKNOWN_LANGUAGE};
     int percent3[3];
     double normalized_score3[3];
     ResultChunkVector resultchunkvector;
