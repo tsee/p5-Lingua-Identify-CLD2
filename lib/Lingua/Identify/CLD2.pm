@@ -46,7 +46,6 @@ my @functions = qw(
 );
   #ULScriptRecognitionType
   #LScript4
-  #LanguageCloseSet
 
 our @EXPORT_OK;
 push @EXPORT_OK, (
@@ -204,7 +203,7 @@ Quoting the CLD2 documentation:
 
 =head2 LanguageCloseSet
 
-Given a CLD2 language id,
+Given a language code or CLD2 language id,
 returns which set of statistically-close languages lang is in. 0 means "none".
 
 =head2 ULScriptName

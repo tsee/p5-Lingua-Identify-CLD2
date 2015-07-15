@@ -78,9 +78,24 @@ LanguageName(int language_id)
     };
   OUTPUT: RETVAL
 
-Language GetLanguageFromName(char* src)
+Language GetLanguageFromName(char* src);
 
-int LanguageCloseSet(Language lang)
+int
+LanguageCloseSet(SV* lang)
+  CODE:
+    char* lang_string = SvPOK(lang) ? SvPV_nolen(lang) : NULL;
+    int src;
+    if (lang_string) {
+        src = CLD2::GetLanguageFromName(lang_string);
+    } else if (SvIOK(lang)) {
+        src = SvIV(lang);
+    } else {
+        src = 0;
+    }
+    # GetLanguageFromName may return UNKNOWN_LANGUAGE, which will cause LanguageCloseSet to return 0,
+    # so we fine there. Alternatively, we could raise an exception.
+    RETVAL = CLD2::LanguageCloseSet((CLD2::Language)src);
+  OUTPUT: RETVAL
 
 const char* ULScriptName(ULScript ulscript);
 const char* ULScriptCode(ULScript ulscript);
