@@ -91,7 +91,3 @@ ULScript GetULScriptFromName(const char* src);
 Language DefaultLanguage(ULScript ulscript);
 
 %}
-
-//ULScriptRType ULScriptRecognitionType(ULScript ulscript);
-//int LScript4(ULScript ulscript);
-//int LanguageCloseSet(Language lang);
