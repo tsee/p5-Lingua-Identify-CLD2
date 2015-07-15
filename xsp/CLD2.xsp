@@ -29,7 +29,7 @@ DetectLanguage(buffer, is_plain_text = 1, cld_hints = &PL_sv_undef, flags = 0)
     bool is_reliable = 0;
     int valid_prefix_bytes = 0;
 
-    Language language = 
+    Language language =
       ExtDetectLanguageSummaryCheckUTF8(buffer_str, (int)buffer_length, is_plain_text, &cld_hints_struct, flags,
                                         language3, percent3, normalized_score3, &resultchunkvector,
                                         &text_bytes, &is_reliable, &valid_prefix_bytes);
@@ -95,5 +95,3 @@ Language DefaultLanguage(ULScript ulscript);
 //ULScriptRType ULScriptRecognitionType(ULScript ulscript);
 //int LScript4(ULScript ulscript);
 //int LanguageCloseSet(Language lang);
-
-
