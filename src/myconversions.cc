@@ -4,37 +4,6 @@
 
 using namespace CLD2;
 
-void
-hashref_to_cldhint(pTHX_ SV *hashref, CLDHints *cldhints)
-{
-  if (!SvOK(hashref)) {
-    // Special case: If undef, we'll use defaults.
-    cldhints->content_language_hint = NULL;
-    cldhints->tld_hint              = NULL;
-    cldhints->encoding_hint         = UNKNOWN_ENCODING;
-    cldhints->language_hint         = UNKNOWN_LANGUAGE;
-    return;
-  }
-
-  if (!SvROK(hashref) || SvTYPE(SvRV(hashref)) != SVt_PVHV)
-    croak("Need hashref for CLDHints");
-  
-  HV *hv = (HV *)SvRV(hashref);
-
-  SV **svp;
-
-  svp = hv_fetchs(hv, "content_language_hint", 0);
-  cldhints->content_language_hint = (svp && SvOK(*svp)) ? SvPV_nolen(*svp) : NULL;
-
-  svp = hv_fetchs(hv, "tld_hint", 0);
-  cldhints->tld_hint = (svp && SvOK(*svp)) ? SvPV_nolen(*svp) : NULL;
-
-  svp = hv_fetchs(hv, "encoding_hint", 0);
-  cldhints->encoding_hint = (svp && SvOK(*svp)) ? SvIV(*svp) : UNKNOWN_ENCODING;
-
-  svp = hv_fetchs(hv, "language_hint", 0);
-  cldhints->language_hint = (svp && SvOK(*svp)) ? (Language)SvIV(*svp) : UNKNOWN_LANGUAGE;
-}
 
 HV *
 resultchunk_to_hash(pTHX_ const ResultChunk &rc)
@@ -84,4 +53,16 @@ languages_to_array(CLD2::Language languages[3], int percent[3], double score[3])
         av_push(av, newRV_noinc((SV *)language_to_hash(languages[i], percent[i], score[i])));
     }
     return av;
+}
+
+CLD2::Language
+scalar_to_language(SV* lang) {
+    char* lang_string = SvPOK(lang) ? SvPV_nolen(lang) : NULL;
+    if (lang_string) {
+        return CLD2::GetLanguageFromName(lang_string);
+    } else if (SvIOK(lang)) {
+        return (CLD2::Language)SvIV(lang);
+    } else {
+        return (CLD2::Language)0;
+    }
 }

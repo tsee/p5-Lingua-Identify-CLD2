@@ -32,6 +32,7 @@ our @ISA = qw(Exporter);
 
 my @functions = qw(
   DetectLanguage
+  ExtDetectLanguage
   LanguageName
   LanguageCode
   LanguageDeclaredName
@@ -44,8 +45,6 @@ my @functions = qw(
   ULScriptDeclaredName
   GetULScriptFromName
 );
-  #ULScriptRecognitionType
-  #LScript4
 
 our @EXPORT_OK;
 push @EXPORT_OK, (
@@ -58,6 +57,34 @@ $EXPORT_TAGS{all} = \@EXPORT_OK;
 $EXPORT_TAGS{functions} = \@functions;
 $EXPORT_TAGS{constants} ||= [];
 push @{$EXPORT_TAGS{constants}}, keys %constants;
+
+sub DetectLanguage {
+    my ($text, $opts) = @_;
+
+    die "Too many arguments" if (scalar @_ > 2);
+    $opts ||= {};
+    die "Invalid 2nd argument, expected hash" if ref($opts) ne 'HASH';
+
+    my $flags = 0;
+    $flags |= kCLDFlagScoreAsQuads if $opts->{scoreAsQuads};
+    $flags |= kCLDFlagHtml if $opts->{html};
+    $flags |= kCLDFlagCr if $opts->{html_cr};
+    $flags |= kCLDFlagVerbose if $opts->{html_verbose};
+    $flags |= kCLDFlagQuiet if $opts->{html_quiet};
+    $flags |= kCLDFlagEcho if $opts->{echo};
+    $flags |= kCLDFlagBestEffort if $opts->{bestEffort};
+
+    return ExtDetectLanguage(
+        $text,
+        $opts->{isPlainText} // 0,
+        $flags,
+        $opts->{content_language_hint} // '',
+        $opts->{tld_hint} // '',
+        $opts->{encoding_hint} // 0,
+        $opts->{language_hint} // '',
+        $opts->{returnVectors} // 0
+    );
+}
 
 1;
 __END__
