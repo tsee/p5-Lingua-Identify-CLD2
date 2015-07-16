@@ -3,7 +3,7 @@ use 5.008;
 use strict;
 use warnings;
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 
 require XSLoader;
@@ -122,78 +122,82 @@ below. For details on its interpretation, please refer to the CLD2 manual.
 Patches welcome.
 
 The first input parameter should be a string containing the text to
-analyse. All other parameters are optional.
+analyse.
 
-The second parameter is a boolean (defaulting to true) that indicates
-whether or not the provided text is plain text. If not, HTML tags/etc will be
-stripped out. The third parameter can be a CLD hints structure (see below) or
-undefined. The fourth parameter is an integer for flags. The following flags
-are defined as constants (and exportable from this module). They can be
-combined with the C<|> operator. As per the CLD2 documentation,
-they are:
+The optional second parameter is a hash reference that allows to specify various options for CLD2.
 
-    kCLDFlagScoreAsQuads # Force Greek, etc. => quads
-    kCLDFlagHtml         # Debug HTML => stderr
-    kCLDFlagCr           # <cr> per chunk if HTML
-    kCLDFlagVerbose      # More debug HTML => stderr
-    kCLDFlagQuiet        # Less debug HTML => stderr
-    kCLDFlagEcho         # Echo input => stderr
-    kCLDFlagBestEffort   # Give best-effort answer
+The following options enable corresponding CLD2 flags:
 
-Quoting the CLD2 documentation with more detail on the flags:
-
-    kCLDFlagScoreAsQuads
+    scoreAsQuads
      Normally, several languages are detected solely by their Unicode script.
      Combined with appropritate lookup tables, this flag forces them instead
      to be detected via quadgrams. This can be a useful refinement when looking
      for meaningful text in these languages, instead of just character sets.
      The default tables do not support this use.
-    kCLDFlagHtml
+
+    html
      For each detection call, write an HTML file to stderr, showing the text
      chunks and their detected languages.
-    kCLDFlagCr
+
+    html_cr
      In that HTML file, force a new line for each chunk.
-    kCLDFlagVerbose
+
+    html_verbose
      In that HTML file, show every lookup entry.
-    kCLDFlagQuiet
+
+    html_quiet
      In that HTML file, suppress most of the output detail.
-    kCLDFlagEcho
+
+    echo
      Echo every input buffer to stderr.
-    kCLDFlagBestEffort
-     Give best-effort answer, instead of UNKNOWN_LANGUAGE. May be useful for
+
+    bestEffort
+     Give best-effort answer, instead of empty string. May be useful for
      short text if the caller prefers an approximate answer over none.
- 
-A CLD2 hints structure in Perl is a reference to a hash
-containing any of the following keys. They all have
-defaults.
 
-    content_language_hint => eg. "mi,en" would boost Maori and English
-    tld_hint              => eg. "id" boosts Indonesian
-    encoding_hint         => Given a CLD encoding id boosts that encoding
-                             (FIXME not exposed to Perl right now)
-    language_hint         => Given a CLD language id, boosts that language
+The following options are translated into CLDHints structure.
 
-Here's an example return value for this function (see F<t/01basic.t>
-in this distribution for this particular example).
+Pass in hints whenever possible; doing so improves detection accuracy. The
+set of passed-in hints are all information that is external to the text
+itself.
+
+    content_language_hint
+     This is intended to come from an HTTP header Content-Language: field.
+     Example: "mi,en" boosts Maori and English
+
+    tld_hint
+     This is from the hostname of the URL.
+     Example: "id" boosts Indonesian
+
+    language_hint
+     Language code from any other context you might have.
+     Example: "it" boosts Italian.
+
+Finally, these options control how CLD2 is called:
+
+    isPlainText
+     By default CLD2 skips html tags and expands html entities. Setting this option disables this behaviour.
+
+    returnVectors
+     When enabled, the result will contain an extra field 'resultchunkvector'.
+
+Example:
+
+    $res = DetectLanguage("Привет", {bestEffort => 1});
 
     $VAR1 = {
-              'valid_prefix_bytes' => 0,
-              'language_string' => 'SINDHI',
-              'language' => 99,
-              'text_bytes' => 202,
-              'normalized_score3' => '1039',
-              'is_reliable' => 1,
-              'resultchunkvector' => [
-                                       {
-                                         'pad' => 42035,
-                                         'bytes' => 212,
-                                         'lang1' => 5,
-                                         'lang1_str' => 'GERMAN',
-                                         'offset' => 0
-                                       }
-                                     ],
-              'percent3' => 99
-            };
+          'language_code' => 'ru',
+          'language_name' => 'RUSSIAN',
+          'languages' => [
+                           {
+                             'language_code' => 'ru',
+                             'percent' => 92,
+                             'score' => 630
+                           }
+                         ],
+          'is_reliable' => 1,
+          'text_bytes' => 14
+        };
 
 
 =head2 LanguageName
@@ -269,6 +273,7 @@ L<Lingua::Identify::CLD>
 =head1 AUTHOR
 
 Steffen Mueller, E<lt>smueller@cpan.orgE<gt>
+Denis Bilenko
 
 =head1 COPYRIGHT AND LICENSE
 
