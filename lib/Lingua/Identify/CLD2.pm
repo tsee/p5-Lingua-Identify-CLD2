@@ -269,6 +269,7 @@ L<Lingua::Identify::CLD>
 =head1 AUTHOR
 
 Steffen Mueller, E<lt>smueller@cpan.orgE<gt>
+
 Denis Bilenko
 
 =head1 COPYRIGHT AND LICENSE
