@@ -25,8 +25,6 @@ BEGIN {
 }
 use constant \%constants;
 
-use Lingua::Identify::CLD2::GenConstants;
-
 require Exporter;
 our @ISA = qw(Exporter);
 
