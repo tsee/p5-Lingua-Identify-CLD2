@@ -36,10 +36,6 @@ my @functions = qw(
   LanguageDeclaredName
   GetLanguageFromName
   LanguageCloseSet
-  ULScriptName
-  ULScriptCode
-  ULScriptDeclaredName
-  GetULScriptFromName
 );
 
 our @EXPORT_OK;
@@ -232,23 +228,6 @@ Quoting the CLD2 documentation:
 
 Given a language code or CLD2 language id,
 returns which set of statistically-close languages lang is in. 0 means "none".
-
-=head2 ULScriptName
-
-Given CLD2 ULScript id, returns the script name as a string.
-
-=head2 ULScriptCode
-
-Given CLD2 ULScript id, returns the code for the script as a string (equivalent
-to the language codes, see above).
-
-=head2 GetULScriptFromName
-
-Given a script name or code, returns the corresponding CLD2 ULScript id.
-
-=head2 DefaultLanguage
-
-Given an ULScript id, returns the most common Language (id) in that script.
 
 =head1 CAVEATS
 

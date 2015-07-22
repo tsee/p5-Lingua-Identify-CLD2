@@ -98,12 +98,4 @@ LanguageCloseSet(SV* lang)
     RETVAL = CLD2::LanguageCloseSet((CLD2::Language)src);
   OUTPUT: RETVAL
 
-const char* ULScriptName(ULScript ulscript);
-const char* ULScriptCode(ULScript ulscript);
-const char* ULScriptDeclaredName(ULScript ulscript);
-
-ULScript GetULScriptFromName(const char* src);
-
-Language DefaultLanguage(ULScript ulscript);
-
 %}
