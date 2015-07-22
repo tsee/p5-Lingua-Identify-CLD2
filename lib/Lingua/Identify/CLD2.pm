@@ -36,8 +36,6 @@ my @functions = qw(
   LanguageDeclaredName
   GetLanguageFromName
   LanguageCloseSet
-  IsLatnLanguage
-  IsOthrLanguage
   ULScriptName
   ULScriptCode
   ULScriptDeclaredName
