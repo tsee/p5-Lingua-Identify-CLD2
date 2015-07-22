@@ -1,5 +1,8 @@
 Change log for Lingua::Identify::CLD2
 
+0.03
+  - Removed CLD2::GenConstants module and ULScript* related functions.
+
 0.02
   - Changed API to accept hash of options as second parameter.
   - Fixed return value.
