@@ -1,6 +1,8 @@
 Change log for Lingua::Identify::CLD2
 
 0.03
+  - Switched CLD2 tables from 'full' to 'chrome_2'. This reduces number of languages
+    recognized (from 160+ to 80+), but improves the accuracy for the remaining ones.
   - Removed CLD2::GenConstants module and ULScript* related functions.
 
 0.02

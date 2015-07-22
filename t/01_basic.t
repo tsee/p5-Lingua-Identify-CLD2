@@ -2,7 +2,7 @@ use strict;
 use warnings;
 use utf8;
 
-use Test::More tests => 22;
+use Test::More tests => 24;
 
 use Lingua::Identify::CLD2 qw/:all/;
 
@@ -72,27 +72,18 @@ is_deeply($res->{languages}, [
 
 
 # in 'full' mode this returns UNKNOWN. In 'chrome' mode it returns correct answer.
-#$res = DetectLanguage("При регистрации заезда гостям необходимо предъявить действительное удостоверение личности, выданное государственным органом, или паспорт.", {bestEffort=>1});
-#is($res->{language_code}, "ru");
-#is($res->{is_reliable}, 1);
-#is_deeply($res->{languages}, [{}]);
-
-
-$res = DetectLanguage("Para garantizar la reserva deberá abonar un depósito mediante transferencia bancaria o PayPal (consulte las condiciones del hotel). Una vez efectuada la reserva, el establecimiento le facilitará las instrucciones necesarias.");
-
-is($res->{language_code}, "es");
+$res = DetectLanguage("При регистрации заезда гостям необходимо предъявить действительное удостоверение личности, выданное государственным органом, или паспорт.", {bestEffort=>1});
+is($res->{language_code}, "ru");
 is($res->{is_reliable}, 1);
 
 
+# in chrome_2 this returns 'pt'. In 'full' this returns 'es'
+#$res = DetectLanguage("Para garantizar la reserva deberá abonar un depósito mediante transferencia bancaria o PayPal (consulte las condiciones del hotel). Una vez efectuada la reserva, el establecimiento le facilitará las instrucciones necesarias.");
+#is($res->{language_code}, "es");
+#is($res->{is_reliable}, 1);
 
-#$res = DetectLanguage("請注意，使用桑拿浴室和日光浴室的客人須支付額外費用");
-#use Data::Dumper;
-#print STDERR Dumper($res) . "\n";
-#is($res->{language_name}, "Chinese");
-#is($res->{language}, "zh");
-
-
-
-#$res = DetectLanguage(<<'TEXT', {bestEffort=>1});
-#El hotel Delminium está ubicado en Stup, un barrio residencial de Sarajevo, cerca del aeropuerto de la ciudad, y cuenta con 2 pistas de tenis, campo de fútbol y restaurante. También ofrece conexión Wi-Fi gratuita y aparcamiento privado vigilado. El Delminium alberga un bar y un restaurante decorado con un estilo clásico en tonos amarillos, donde se sirven platos típicos de Bosnia junto con platos clásicos internacionales. Las habitaciones tiene el suelo de moqueta e incluyen baño privado de azulejo, TV y minibar. Este hotel se encuentra a 8 km del centro de Sarajevo, a 4 km del aeropuerto de Sarajevo, a 6 km de la estación de trenes y autobuses central de Sarajevo y a 45 minutos en coche de las estaciones olímpicas de Bjelasnica e Igman.
-#TEXT
+# works with a hint though
+$res = DetectLanguage("Para garantizar la reserva deberá abonar un depósito mediante transferencia bancaria o PayPal
+(consulte las condiciones del hotel). Una vez efectuada la reserva, el establecimiento le facilitará las instrucciones necesarias.", {language_hint=>'es'});
+is($res->{language_code}, "es");
+is($res->{is_reliable}, 1);
