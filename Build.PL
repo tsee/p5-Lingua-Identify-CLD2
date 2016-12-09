@@ -7,6 +7,7 @@ my $build = Module::Build::WithXSpp->new(
   license         => 'perl',
   requires        => {
   },
+  test_requires => { 'Test::More' => 0, 'Test::Exception' => 0, },
   # Provides useful extra C typemaps for opaque objects:
   extra_typemap_modules => {
     'ExtUtils::Typemaps::ObjectMap'  => '0.01',

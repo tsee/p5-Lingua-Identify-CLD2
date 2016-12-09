@@ -4,6 +4,7 @@
 #include <compact_lang_det.h>
 #include <EXTERN.h>
 #include <perl.h>
+#include <XSUB.h>
 #include <vector>
 
 
