@@ -36,6 +36,7 @@ resultchunk_vector_to_array(pTHX_ const ResultChunkVector &rcv)
 
 HV*
 language_to_hash(CLD2::Language language, int percent, double score) {
+    dTHX;
     HV *hv = newHV();
     hv_stores(hv, "language_code", newSVpv(CLD2::LanguageCode(language), 0));
     hv_stores(hv, "percent", newSViv(percent));
@@ -45,6 +46,7 @@ language_to_hash(CLD2::Language language, int percent, double score) {
 
 AV*
 languages_to_array(CLD2::Language languages[3], int percent[3], double score[3]) {
+    dTHX;
     AV* av = newAV();
     for (int i = 0; i < 3; ++i) {
         if (languages[i] == UNKNOWN_LANGUAGE) {
@@ -57,6 +59,7 @@ languages_to_array(CLD2::Language languages[3], int percent[3], double score[3])
 
 CLD2::Language
 scalar_to_language(SV* lang) {
+    dTHX;
     char* lang_string = SvPOK(lang) ? SvPV_nolen(lang) : NULL;
     if (lang_string) {
         return CLD2::GetLanguageFromName(lang_string);
