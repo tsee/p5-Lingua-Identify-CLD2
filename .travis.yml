@@ -1,0 +1,19 @@
+os: linux
+dist: xenial
+language: shell
+
+before_install:
+  - sudo apt update
+  - sudo apt install -y libcld2-dev perl cpanminus
+
+install:
+  - sudo apt install -y libmodule-build-perl libmodule-build-withxspp-perl libextutils-typemaps-default-perl libtest-exception-perl
+  - cpanm --verbose --installdeps --notest .
+
+script:
+  - perl Build.PL
+  - ./Build 
+  - ./Build test
+
+notifications:
+  email: false

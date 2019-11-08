@@ -1,0 +1,14 @@
+version: 2
+jobs:
+  build:
+    machine:
+      image: ubuntu-1604:201903-01
+    steps:
+      - checkout
+      - run: sudo apt update
+      - run: sudo apt install -y libcld2-dev
+      - run: sudo apt install -y cpanminus libmodule-build-perl libmodule-build-withxspp-perl libextutils-typemaps-default-perl libtest-exception-perl
+      - run: cpanm --verbose --installdeps --notest .
+      - run: perl Build.PL
+      - run: ./Build
+      - run: ./Build test
