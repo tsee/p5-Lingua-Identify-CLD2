@@ -2,6 +2,16 @@
 use strict;
 use Module::Build::WithXSpp;
 
+
+my $inc = "/usr/local/include/cld"; # BSD
+unless (-e $inc) {
+	$inc = "/usr/include/cld2"; # Linux
+	unless (-e $inc) {
+		die "Unable to find libcld2...\n";
+	}
+}
+
+
 my $build = Module::Build::WithXSpp->new(
   module_name     => 'Lingua::Identify::CLD2',
   license         => 'perl',
@@ -15,8 +25,8 @@ my $build = Module::Build::WithXSpp->new(
     'ExtUtils::Typemap::Basic'       => '0.04',
   },
   early_includes => [qw()],
-  extra_compiler_flags => [ "-Isrc/cld2/internal", "-Isrc/cld2/public", "-Icld2/internal", "-Icld2/public" ],
-  #extra_linker_flags   => [ (defined($additional_link_dir) ? "-L$additional_link_dir" : ()), "-lcld2_full" ],
+  extra_compiler_flags => ["-Isrc", "-I$inc/internal", "-I$inc/public"],
+  extra_linker_flags   => ["-lcld2"],
 );
 
 $build->create_build_script;

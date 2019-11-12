@@ -3,7 +3,7 @@ use 5.008;
 use strict;
 use warnings;
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 
 require XSLoader;
@@ -203,7 +203,7 @@ documentation:
 
     Given the Language, return the language code, e.g. "ko"
     This is determined by the following (in order of preference):
-    
+
     - ISO-639-1 two-letter language code
       (all except those mentioned below)
     - ISO-639-2 three-letter bibliographic language code
@@ -265,19 +265,19 @@ At the time of this writing, the CLD2 library code carries the
 following license and author notice:
 
     Copyright 2013 Google Inc. All Rights Reserved.
-    
+
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
     You may obtain a copy of the License at
-    
+
         http://www.apache.org/licenses/LICENSE-2.0
-    
+
     Unless required by applicable law or agreed to in writing, software
     distributed under the License is distributed on an "AS IS" BASIS,
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
-    
+
     Author: dsites@google.com (Dick Sites)
 
 =cut
