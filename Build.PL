@@ -15,7 +15,7 @@ my $build = Module::Build::WithXSpp->new(
     'ExtUtils::Typemap::Basic'       => '0.04',
   },
   early_includes => [qw()],
-  extra_compiler_flags => [ "-Isrc/cld2/internal", "-Isrc/cld2/public", "-Icld2/internal", "-Icld2/public" ],
+  extra_compiler_flags => [ '-std=c++98', "-Isrc/cld2/internal", "-Isrc/cld2/public", "-Icld2/internal", "-Icld2/public" ],
   #extra_linker_flags   => [ (defined($additional_link_dir) ? "-L$additional_link_dir" : ()), "-lcld2_full" ],
 );
 
